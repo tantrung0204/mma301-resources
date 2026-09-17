@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
+import { Pressable } from "react-native";
 import styled from "styled-components/native";
-import { profiles } from "../data/profiles";
 
 const Container = styled.View`
   padding: 20px;
@@ -34,17 +35,43 @@ const Job = styled.Text`
   color: gray;
 `;
 
-const StyledScreen = () => {
+const StyledScreen = ({ navigation }) => {
+  const [profiles, setProfiles] = useState([]);
+
+  const fetchProfiles = () => {
+    fetch("http://192.168.101.106:3000/profiles")
+      .then((response) => response.json())
+      .then((data) => {
+        setProfiles(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching profiles:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
   return (
     <Container>
       {profiles.map((profile) => (
-        <Card key={profile.id}>
-          <Avatar source={profile.avatar} />
-          <Info>
-            <Name>{profile.name}</Name>
-            <Job>{profile.job}</Job>
-          </Info>
-        </Card>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("HomeTab", {
+              screen: "ProfileDetail",
+              params: { id: profile.id },
+            })
+          }
+        >
+          <Card key={profile.id}>
+            <Avatar source={{ uri: profile.avatar }} width={60} height={60} />
+            <Info>
+              <Name>{profile.name}</Name>
+              <Job>{profile.job}</Job>
+            </Info>
+          </Card>
+        </Pressable>
       ))}
     </Container>
   );

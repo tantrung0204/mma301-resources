@@ -1,14 +1,21 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 
-const ProfileCard = ({ name, job, avatar }) => {
+const ProfileCard = ({ name, job, avatar, onPress }) => {
   return (
-    <View style={styles.card}>
-      <Image source={avatar} style={styles.avatar} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.job}>{job}</Text>
+    <Pressable onPress={onPress}>
+      <View style={styles.card}>
+        <Image
+          source={{ uri: avatar }}
+          style={styles.avatar}
+          width={60}
+          height={60}
+        />
+        <View style={styles.info}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.job}>{job}</Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -19,6 +26,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     marginVertical: 8,
+    justifyContent: "space-between",
     alignItems: "center",
     elevation: 2,
   },
@@ -37,7 +45,7 @@ const styles = StyleSheet.create({
   },
   job: {
     fontSize: 14,
-    color: "#gray",
+    color: "gray",
   },
 });
 

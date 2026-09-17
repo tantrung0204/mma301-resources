@@ -12,7 +12,7 @@ exports.getAll = (req, res) => {
 
 exports.getOne = (req, res) => {
   const profiles = getProfiles();
-  const profile = profiles.find((p) => p.id === req.params.id);
+  const profile = profiles.find((p) => p.id === Number(req.params.id));
   profile ? res.json(profile) : res.status(404).json({ error: "Not found" });
 };
 
